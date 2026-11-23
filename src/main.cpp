@@ -8,6 +8,7 @@
 #include "i2c.hpp"
 #include "lcd.hpp"
 #include "meteo.hpp"
+#include "rtc.hpp"
 #include "freertos/FreeRTOS.h"
 
 namespace
@@ -20,6 +21,7 @@ namespace
     uart::UartHandler uartHandler;
     meteo::MeteoHandler meteoHandler;
     i2c::I2CHandler i2cHandler;
+    rtc::RTCHandler rtcHandler;
 
     uint8_t convertRGBValueToBarHeight(uint8_t value)
     {
@@ -95,13 +97,40 @@ void setup()
     buttonHandler.setOnPressCallback(&onButtonPress);
     buttonHandler.setOnReleaseCallback(&OnButtonRelease);
     uartHandler.init(uartConfig::rxPin, uartConfig::txPin);
-    uartHandler.setCallback(&onSTMCommand);
-    lcdHandle.init(i2cHandler.getMasterBus());
     vTaskDelay(pdMS_TO_TICKS(1000));
+    uartHandler.setCallback(&onSTMCommand);
+    i2cHandler.scan();
+    lcdHandle.init(i2cHandler.getMasterBus());
     meteoHandler.init();
     meteoHandler.setCallbackOnTemperatureUpdate(&onTemperatureUpdate);
     meteoHandler.setCallbackOnHumidityUpdate(&onHumidityUpdate);
     meteoHandler.setCallbackOnPressureUpdate(&onPressureUpdate);
+    rtcHandler.init(i2cHandler.getMasterBus());
+
+    // rtcHandler.resetAndRun();
+    uint8_t timeData[8] = {
+        0x00,
+        rtc::valueToBcd(0),
+        rtc::valueToBcd(45),
+        rtc::valueToBcd(15),
+        rtc::valueToBcd(1),
+        rtc::valueToBcd(23),
+        rtc::valueToBcd(11),
+        rtc::valueToBcd(26),
+    };
+    // rtcHandler.setTime(timeData);
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    rtcHandler.update();
+    // rtcHandler.updateSeconds();
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    rtcHandler.printTime();
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    rtcHandler.printTime();
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    rtcHandler.printTime();
+    // rtcHandler.updateSeconds();
+    // vTaskDelay(pdMS_TO_TICKS(3000));
+    // rtcHandler.updateSeconds();
 }
 
 void app()

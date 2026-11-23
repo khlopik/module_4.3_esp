@@ -9,6 +9,7 @@ namespace i2c
     public:
         void init();
         i2c_master_bus_handle_t getMasterBus() const;
+        void scan();
 
     private:
         i2c_master_bus_handle_t masterBus_;

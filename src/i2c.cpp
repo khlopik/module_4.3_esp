@@ -29,4 +29,15 @@ namespace i2c
     {
         return masterBus_;
     }
+
+    void I2CHandler::scan()
+    {
+        for (uint8_t addr = 0x03; addr < 0x78; addr++)
+        {
+            if (i2c_master_probe(masterBus_, addr, 50) == ESP_OK)
+            {
+                ESP_LOGI(TAG, "Found device at 0x%02X", addr);
+            }
+        }
+    }
 }

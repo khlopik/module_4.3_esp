@@ -94,9 +94,9 @@ namespace meteo
             return;
         }
 
-        ESP_LOGI(TAG, "Temperature value: %f", value);
+        // ESP_LOGI(TAG, "Temperature value: %f", value);
         int32_t roundedValue = lroundf(value * 100.0f);
-        ESP_LOGI(TAG, "Temperature roundedValue: %d", roundedValue);
+        // ESP_LOGI(TAG, "Temperature roundedValue: %d", roundedValue);
         if (roundedValue == tempX100_)
             return;
 
@@ -114,10 +114,10 @@ namespace meteo
             return;
         }
 
-        ESP_LOGI(TAG, "Humidity value: %f", value);
+        // ESP_LOGI(TAG, "Humidity value: %f", value);
 
         int32_t roundedValue = lroundf(value * 100.0f);
-        ESP_LOGI(TAG, "Humidity roundedValue: %d", roundedValue);
+        // ESP_LOGI(TAG, "Humidity roundedValue: %d", roundedValue);
         if (roundedValue == humidX100_)
             return;
 
