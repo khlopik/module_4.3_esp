@@ -1,0 +1,6 @@
+dependencies:
+  espressif/button: "*"
+  espressif/led_strip: "^3.0.1~1"
+  espressif/esp_lvgl_port: "*"
+  espressif/bme280: "^0.1.1"
+  k0i05/esp_ssd1306: "^1.2.7"
